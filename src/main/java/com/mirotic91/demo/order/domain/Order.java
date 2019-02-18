@@ -54,6 +54,17 @@ public class Order {
         this.state = OrderState.SHIPPED;
     }
 
+    public void cancel() {
+        verifyNotYetShipped();
+        this.state = OrderState.CANCELED;
+    }
+
+    private void verifyNotYetShipped() {
+        if (!state.isShippingChangeable()) {
+            throw new IllegalStateException("already shipped");
+        }
+    }
+
     private void calculateTotalAmounts() {
         this.totalAmounts = new Money(orderLines.stream().mapToInt(ol -> ol.getAmounts().getValue()).sum());
     }
