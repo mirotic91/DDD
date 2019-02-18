@@ -1,6 +1,9 @@
 package com.mirotic91.demo.order.domain;
 
 import lombok.Getter;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 @Getter
 public class Order {
@@ -8,6 +11,33 @@ public class Order {
     private OrderState state;
 
     private ShippingInfo shippingInfo;
+
+    private Money totalAmounts;
+
+    private List<OrderLine> orderLines;
+
+    public Order(List<OrderLine> orderLines, ShippingInfo shippingInfo) {
+        setOrderLines(orderLines);
+        setShippingInfo(shippingInfo);
+    }
+
+    private void setOrderLines(List<OrderLine> orderLines) {
+        verifyAtLeastOneOrMoreOrderLines(orderLines);
+        this.orderLines = orderLines;
+    }
+
+    private void verifyAtLeastOneOrMoreOrderLines(List<OrderLine> orderLines) {
+        if (CollectionUtils.isEmpty(orderLines)) {
+            throw new IllegalArgumentException("no OrderLine");
+        }
+    }
+
+    private void setShippingInfo(ShippingInfo shippingInfo) {
+        if (shippingInfo == null) {
+            throw new IllegalArgumentException("no ShippingInfo");
+        }
+        this.shippingInfo = shippingInfo;
+    }
 
     public void changeShippingInfo(ShippingInfo newShippingInfo) {
         if (!state.isShippingChangeable()) {
@@ -24,4 +54,7 @@ public class Order {
         this.state = OrderState.SHIPPED;
     }
 
+    private void calculateTotalAmounts() {
+        this.totalAmounts = new Money(orderLines.stream().mapToInt(ol -> ol.getAmounts().getValue()).sum());
+    }
 }
