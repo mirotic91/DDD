@@ -8,6 +8,8 @@ import java.util.List;
 @Getter
 public class Order {
 
+    private Orderer orderer;
+
     private OrderState state;
 
     private ShippingInfo shippingInfo;
@@ -16,14 +18,23 @@ public class Order {
 
     private List<OrderLine> orderLines;
 
-    public Order(List<OrderLine> orderLines, ShippingInfo shippingInfo) {
+    public Order(Orderer orderer, List<OrderLine> orderLines, ShippingInfo shippingInfo) {
+        setOrderer(orderer);
         setOrderLines(orderLines);
         setShippingInfo(shippingInfo);
+    }
+
+    private void setOrderer(Orderer orderer) {
+        if (orderer == null) {
+            throw new IllegalArgumentException("no Orderer");
+        }
+        this.orderer = orderer;
     }
 
     private void setOrderLines(List<OrderLine> orderLines) {
         verifyAtLeastOneOrMoreOrderLines(orderLines);
         this.orderLines = orderLines;
+        calculateTotalAmounts();
     }
 
     private void verifyAtLeastOneOrMoreOrderLines(List<OrderLine> orderLines) {
