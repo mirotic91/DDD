@@ -8,6 +8,8 @@ import java.util.List;
 @Getter
 public class Order {
 
+    private OrderNo number;
+
     private Orderer orderer;
 
     private OrderState state;
