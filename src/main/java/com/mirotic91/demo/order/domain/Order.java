@@ -79,6 +79,6 @@ public class Order {
     }
 
     private void calculateTotalAmounts() {
-        this.totalAmounts = new Money(orderLines.stream().mapToInt(ol -> ol.getAmounts().getValue()).sum());
+        this.totalAmounts = Money.newInstance(orderLines.stream().mapToInt(ol -> ol.getAmounts().getValue()).sum());
     }
 }
