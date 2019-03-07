@@ -1,23 +1,45 @@
 package com.mirotic91.demo.order.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.util.CollectionUtils;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.List;
 
+@Table(name = "tb_order")
+@Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
 
+    @EmbeddedId
     private OrderNo number;
 
-    private Orderer orderer;
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "state")
     private OrderState state;
 
+    @Embedded
+    private Orderer orderer;
+
+    @Embedded
     private ShippingInfo shippingInfo;
 
+    @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "total_amounts"))
     private Money totalAmounts;
 
+    @Transient
     private List<OrderLine> orderLines;
 
     public Order(Orderer orderer, List<OrderLine> orderLines, ShippingInfo shippingInfo) {

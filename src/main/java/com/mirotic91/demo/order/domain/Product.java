@@ -11,7 +11,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Table(name = "product")
+@Table(name = "tb_product")
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

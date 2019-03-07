@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Embeddable
 @Getter
 @Access(AccessType.FIELD)
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "number")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderNo implements Serializable {
 
