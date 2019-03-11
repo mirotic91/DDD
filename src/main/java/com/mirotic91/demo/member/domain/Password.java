@@ -9,7 +9,15 @@ import javax.persistence.Embeddable;
 @Getter
 public class Password {
 
-  @Column(name = "password")
-  private String value;
+    @Column(name = "password")
+    private String value;
+
+    Password(String value) {
+        this.value = value;
+    }
+
+    public boolean matches(String password) {
+        return this.value.equals(password);
+    }
 
 }
