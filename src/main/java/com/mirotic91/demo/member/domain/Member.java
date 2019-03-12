@@ -1,5 +1,6 @@
 package com.mirotic91.demo.member.domain;
 
+import com.mirotic91.demo.common.model.Name;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,13 +16,13 @@ import javax.persistence.Table;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
 
-  @EmbeddedId
-  private MemberId id;
+    @EmbeddedId
+    private MemberId id;
 
-  @Embedded
-  private MemberName name;
+    @Embedded
+    private Name name;
 
-  @Embedded
-  private Password password;
+    @Embedded
+    private Password password;
 
 }
