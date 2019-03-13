@@ -1,7 +1,9 @@
 package com.mirotic91.demo.member.domain;
 
 import com.mirotic91.demo.common.model.Name;
+import com.mirotic91.demo.member.domain.exception.PasswordNotMatchException;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,5 +33,18 @@ public class Member {
 
     @Embedded
     private Password password;
+
+    @Builder
+    public Member(final Name name, final Password password) {
+        this.name = name;
+        this.password = password;
+    }
+
+    public void changePassword(String oldPassword, String newPassword) {
+        if (!password.matches(oldPassword)) {
+            throw new PasswordNotMatchException();
+        }
+        this.password = Password.of(newPassword);
+    }
 
 }

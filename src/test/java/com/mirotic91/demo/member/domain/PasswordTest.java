@@ -11,7 +11,7 @@ class PasswordTest {
     @Test
     @DisplayName("비밀번호 일치여부 확인")
     void matches() {
-        Password password = new Password("password");
+        Password password = Password.of("password");
         assertFalse(password.matches(""));
         assertFalse(password.matches(null));
         assertFalse(password.matches("word"));
