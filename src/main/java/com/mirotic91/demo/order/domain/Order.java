@@ -1,6 +1,7 @@
 package com.mirotic91.demo.order.domain;
 
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.CollectionUtils;
@@ -8,10 +9,12 @@ import org.springframework.util.CollectionUtils;
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.List;
@@ -19,11 +22,14 @@ import java.util.List;
 @Table(name = "tb_order")
 @Entity
 @Getter
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
 
-    @EmbeddedId
-    private OrderNo number;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", updatable = false)
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "state")
