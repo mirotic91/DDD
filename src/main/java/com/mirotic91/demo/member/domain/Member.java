@@ -1,5 +1,6 @@
 package com.mirotic91.demo.member.domain;
 
+import com.mirotic91.demo.common.model.Email;
 import com.mirotic91.demo.common.model.Name;
 import com.mirotic91.demo.member.domain.exception.PasswordNotMatchException;
 import lombok.AccessLevel;
@@ -29,13 +30,17 @@ public class Member {
     private Long id;
 
     @Embedded
+    private Email email;
+
+    @Embedded
     private Name name;
 
     @Embedded
     private Password password;
 
     @Builder
-    public Member(final Name name, final Password password) {
+    public Member(Email email, Name name, Password password) {
+        this.email = email;
         this.name = name;
         this.password = password;
     }

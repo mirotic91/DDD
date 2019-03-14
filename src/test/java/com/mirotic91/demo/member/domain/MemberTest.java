@@ -1,6 +1,5 @@
 package com.mirotic91.demo.member.domain;
 
-import com.mirotic91.demo.common.model.Name;
 import com.mirotic91.demo.member.domain.exception.PasswordNotMatchException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,17 +12,7 @@ class MemberTest {
 
     @BeforeAll
     static void setUp() {
-        Name name = Name.builder()
-            .first("jonguk")
-            .last("park")
-            .build();
-
-        Password password = Password.of("old");
-
-        member = Member.builder()
-            .name(name)
-            .password(password)
-            .build();
+        member = MemberBuilder.build();
     }
 
     @Test
