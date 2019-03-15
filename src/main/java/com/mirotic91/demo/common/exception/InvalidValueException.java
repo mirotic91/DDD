@@ -1,4 +1,4 @@
-package com.mirotic91.demo.exception;
+package com.mirotic91.demo.common.exception;
 
 public class InvalidValueException extends BusinessException {
 
