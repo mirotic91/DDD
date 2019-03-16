@@ -18,10 +18,10 @@ public class Money {
     }
 
     public Money multiply(int multiplier) {
-        return newInstance(value * multiplier);
+        return from(value * multiplier);
     }
 
-    public static Money newInstance(int value) {
+    public static Money from(final int value) {
         return new Money(value);
     }
 }

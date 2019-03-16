@@ -23,7 +23,7 @@ class MemberRepositoryTest {
     @Test
     @DisplayName("존재하는 회원")
     void existsByEmail_true() {
-        Email email = Email.of("jonguk1221@gmail.com");
+        Email email = Email.from("jonguk1221@gmail.com");
         boolean existsByEmail = memberRepository.existsByEmail(email);
         Assertions.assertThat(existsByEmail).isTrue();
     }
@@ -31,7 +31,7 @@ class MemberRepositoryTest {
     @Test
     @DisplayName("존재하지 않는 회원")
     void existsByEmail_false() {
-        Email email = Email.of("test@gmail.com");
+        Email email = Email.from("test@gmail.com");
         boolean existsByEmail = memberRepository.existsByEmail(email);
         Assertions.assertThat(existsByEmail).isFalse();
     }

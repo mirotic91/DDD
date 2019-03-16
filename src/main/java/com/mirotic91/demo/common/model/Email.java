@@ -19,7 +19,7 @@ public class Email {
         this.value = value;
     }
 
-    public static Email of(final String value) {
+    public static Email from(final String value) {
         return new Email(value);
     }
 

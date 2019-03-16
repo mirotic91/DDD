@@ -23,7 +23,7 @@ public class Password {
         return this.value.equals(password);
     }
 
-    public static Password of(final String value) {
+    public static Password from(final String value) {
         return new Password(value);
     }
 

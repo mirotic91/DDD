@@ -7,8 +7,8 @@ public class MemberBuilder {
 
     public static Member build() {
         final Name name = buildName();
-        final Email email = Email.of("jonguk1221@gmail.com");
-        final Password password = Password.of("old");
+        final Email email = Email.from("jonguk1221@gmail.com");
+        final Password password = Password.from("old");
         return createMember(email, name, password);
     }
 

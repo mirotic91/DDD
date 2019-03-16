@@ -15,7 +15,7 @@ public class OrderLine {
 
     public OrderLine(Product product, Money price, int quantity) {
         this.product = product;
-        this.price = Money.newInstance(price.getValue());
+        this.price = Money.from(price.getValue());
         this.quantity = quantity;
         this.amounts = calculateAmounts();
     }

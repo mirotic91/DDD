@@ -49,7 +49,7 @@ public class Member {
         if (!password.matches(oldPassword)) {
             throw new PasswordNotMatchException();
         }
-        this.password = Password.of(newPassword);
+        this.password = Password.from(newPassword);
     }
 
 }

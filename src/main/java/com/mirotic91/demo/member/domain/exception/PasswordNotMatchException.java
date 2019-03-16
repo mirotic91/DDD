@@ -1,7 +1,7 @@
 package com.mirotic91.demo.member.domain.exception;
 
-import com.mirotic91.demo.exception.ErrorCode;
-import com.mirotic91.demo.exception.InvalidValueException;
+import com.mirotic91.demo.common.exception.ErrorCode;
+import com.mirotic91.demo.common.exception.InvalidValueException;
 
 public class PasswordNotMatchException extends InvalidValueException {
 
