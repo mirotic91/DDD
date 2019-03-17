@@ -1,6 +1,7 @@
 package com.mirotic91.demo.order.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,10 +49,12 @@ public class Order {
     @Transient
     private List<OrderLine> orderLines;
 
-    public Order(Orderer orderer, List<OrderLine> orderLines, ShippingInfo shippingInfo) {
+    @Builder
+    public Order(Orderer orderer, ShippingInfo shippingInfo, List<OrderLine> orderLines) {
+        this.state = OrderState.PAYMENT_WAITING;
         setOrderer(orderer);
-        setOrderLines(orderLines);
         setShippingInfo(shippingInfo);
+        setOrderLines(orderLines);
     }
 
     private void setOrderer(Orderer orderer) {
@@ -59,6 +62,13 @@ public class Order {
             throw new IllegalArgumentException("no Orderer");
         }
         this.orderer = orderer;
+    }
+
+    private void setShippingInfo(ShippingInfo shippingInfo) {
+        if (shippingInfo == null) {
+            throw new IllegalArgumentException("no ShippingInfo");
+        }
+        this.shippingInfo = shippingInfo;
     }
 
     private void setOrderLines(List<OrderLine> orderLines) {
@@ -73,11 +83,8 @@ public class Order {
         }
     }
 
-    private void setShippingInfo(ShippingInfo shippingInfo) {
-        if (shippingInfo == null) {
-            throw new IllegalArgumentException("no ShippingInfo");
-        }
-        this.shippingInfo = shippingInfo;
+    private void calculateTotalAmounts() {
+        this.totalAmounts = Money.from(orderLines.stream().mapToInt(ol -> ol.getAmounts().getValue()).sum());
     }
 
     public void changeShippingInfo(ShippingInfo newShippingInfo) {
@@ -106,7 +113,4 @@ public class Order {
         }
     }
 
-    private void calculateTotalAmounts() {
-        this.totalAmounts = Money.from(orderLines.stream().mapToInt(ol -> ol.getAmounts().getValue()).sum());
-    }
 }
