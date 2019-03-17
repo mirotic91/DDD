@@ -8,11 +8,7 @@ class NameTest {
 
     @Test
     void getFullName() {
-        Name name = Name.builder()
-            .first("jonguk")
-            .last("park")
-            .build();
-
+        Name name = NameBuilder.build();
         assertThat(name.getFullName()).isEqualTo("jonguk park");
     }
 }
