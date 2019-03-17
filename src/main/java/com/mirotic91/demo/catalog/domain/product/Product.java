@@ -1,6 +1,8 @@
-package com.mirotic91.demo.order.domain;
+package com.mirotic91.demo.catalog.domain.product;
 
+import com.mirotic91.demo.order.domain.Money;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,11 +31,18 @@ public class Product {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "detail")
+    private String detail;
+
     @Embedded
     @AttributeOverride(name = "value", column = @Column(name = "price"))
     private Money price;
 
-    @Column(name = "detail")
-    private String detail;
+    @Builder
+    public Product(final String name, final String detail, Money price) {
+        this.name = name;
+        this.detail = detail;
+        this.price = price;
+    }
 
 }
