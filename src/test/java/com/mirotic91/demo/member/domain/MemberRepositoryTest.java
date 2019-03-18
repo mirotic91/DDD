@@ -8,6 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 @DataJpaTest
 class MemberRepositoryTest {
 
@@ -34,6 +38,20 @@ class MemberRepositoryTest {
         Email email = Email.from("test@gmail.com");
         boolean existsByEmail = memberRepository.existsByEmail(email);
         Assertions.assertThat(existsByEmail).isFalse();
+    }
+
+    @Test
+    @DisplayName("생성/수정일시 확인")
+    void checkSavedDateTime() {
+        Member member = memberRepository.findAll().get(0);
+        LocalDateTime createAt = member.getCreateAt();
+        LocalDateTime updateAt = member.getUpdateAt();
+
+        member.changePassword("old", "new");
+        member = memberRepository.saveAndFlush(member);
+
+        assertThat(createAt).isEqualTo(member.getCreateAt());
+        assertThat(updateAt).isBefore(member.getUpdateAt());
     }
 
 }

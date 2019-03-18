@@ -8,6 +8,8 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
@@ -16,6 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Table(name = "tb_member")
 @Entity
@@ -37,6 +40,14 @@ public class Member {
 
     @Embedded
     private Password password;
+
+    @CreationTimestamp
+    @Column(name = "create_at", updatable = false)
+    private LocalDateTime createAt;
+
+    @UpdateTimestamp
+    @Column(name = "update_at")
+    private LocalDateTime updateAt;
 
     @Builder
     public Member(Email email, Name name, Password password) {
