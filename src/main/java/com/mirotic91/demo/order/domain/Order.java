@@ -50,8 +50,8 @@ public class Order {
     private List<OrderLine> orderLines;
 
     @Builder
-    public Order(Orderer orderer, ShippingInfo shippingInfo, List<OrderLine> orderLines) {
-        this.state = OrderState.PAYMENT_WAITING;
+    public Order(OrderState state, Orderer orderer, ShippingInfo shippingInfo, List<OrderLine> orderLines) {
+        this.state = state;
         setOrderer(orderer);
         setShippingInfo(shippingInfo);
         setOrderLines(orderLines);

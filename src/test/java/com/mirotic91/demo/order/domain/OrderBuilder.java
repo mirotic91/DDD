@@ -9,11 +9,15 @@ import java.util.List;
 public class OrderBuilder {
 
     public static Order build() {
+        return build(OrderState.PAYMENT_WAITING);
+    }
+
+    public static Order build(OrderState state) {
         final Orderer orderer = buildOrderer();
         final ShippingInfo shippingInfo = ShippingInfoBuilder.build();
         final OrderLine orderLine = OrderLineBuilder.build();
         List<OrderLine> orderLines = Arrays.asList(orderLine);
-        return createOrder(orderer, shippingInfo, orderLines);
+        return createOrder(state, orderer, shippingInfo, orderLines);
     }
 
     private static Orderer buildOrderer() {
@@ -23,8 +27,9 @@ public class OrderBuilder {
                 .build();
     }
 
-    private static Order createOrder(Orderer orderer, ShippingInfo shippingInfo, List<OrderLine> orderLines) {
+    private static Order createOrder(OrderState state, Orderer orderer, ShippingInfo shippingInfo, List<OrderLine> orderLines) {
         return Order.builder()
+                .state(state)
                 .orderer(orderer)
                 .shippingInfo(shippingInfo)
                 .orderLines(orderLines)

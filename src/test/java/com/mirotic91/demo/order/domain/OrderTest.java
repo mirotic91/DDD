@@ -1,6 +1,6 @@
 package com.mirotic91.demo.order.domain;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -9,10 +9,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class OrderTest {
 
-    private static Order order;
+    private Order order;
 
-    @BeforeAll
-    static void setUp() {
+    @BeforeEach
+    void setUp() {
         order = OrderBuilder.build();
     }
 
@@ -30,7 +30,15 @@ class OrderTest {
     }
 
     @Test
-    @DisplayName("결제 대기중 배송처리시 실패")
+    @DisplayName("주문 출고 처리")
+    void changeShipped() {
+        order = OrderBuilder.build(OrderState.PREPARING);
+        order.changeShipped();
+        assertThat(order.getState()).isEqualTo(OrderState.SHIPPED);
+    }
+
+    @Test
+    @DisplayName("결제 대기중 출고 처리 불가")
     void changeShipped_paymentWaitingState() {
         assertThat(order.getState()).isEqualTo(OrderState.PAYMENT_WAITING);
         assertThrows(IllegalStateException.class, () -> order.changeShipped());
@@ -46,4 +54,20 @@ class OrderTest {
         assertThat(order.getShippingInfo().getMessage()).isNotEqualTo(oldMessage);
         assertThat(order.getShippingInfo().getMessage()).isEqualTo(newMessage);
     }
+
+    @Test
+    @DisplayName("배송 처리전 주문 취소")
+    void cancel() {
+        assertThat(order.getState()).isEqualTo(OrderState.PAYMENT_WAITING);
+        order.cancel();
+        assertThat(order.getState()).isEqualTo(OrderState.CANCELED);
+    }
+
+    @Test
+    @DisplayName("배송중 주문 취소 불가")
+    void cancel_deliveringState() {
+        order = OrderBuilder.build(OrderState.DELIVERING);
+        assertThrows(IllegalStateException.class, () -> order.cancel());
+    }
+
 }
