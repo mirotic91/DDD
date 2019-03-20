@@ -1,9 +1,11 @@
 package com.mirotic91.demo.order.domain;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class OrderTest {
 
@@ -27,4 +29,21 @@ class OrderTest {
         assertThat(order.getTotalAmounts().getValue()).isEqualTo(1500);
     }
 
+    @Test
+    @DisplayName("결제 대기중 배송처리시 실패")
+    void changeShipped_paymentWaitingState() {
+        assertThat(order.getState()).isEqualTo(OrderState.PAYMENT_WAITING);
+        assertThrows(IllegalStateException.class, () -> order.changeShipped());
+    }
+
+    @Test
+    @DisplayName("배송 처리전 배송 메세지 변경")
+    void changeShippingInfo() {
+        String oldMessage = order.getShippingInfo().getMessage();
+        String newMessage = "8282";
+
+        order.changeShippingInfo(ShippingInfoBuilder.build(newMessage));
+        assertThat(order.getShippingInfo().getMessage()).isNotEqualTo(oldMessage);
+        assertThat(order.getShippingInfo().getMessage()).isEqualTo(newMessage);
+    }
 }
