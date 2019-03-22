@@ -10,24 +10,25 @@ class MemberTest {
 
     private static Member member;
 
+    private static Password password;
+
     @BeforeAll
     static void setUp() {
         member = MemberBuilder.build();
+        password = PasswordBuilder.build();
     }
 
     @Test
     @DisplayName("비밀번호 변경")
     void changePassword() {
-        String newPassword = "new";
-        member.changePassword("old", newPassword);
-        Assertions.assertEquals(member.getPassword().getValue(), newPassword);
+        member.changePassword(password);
+        Assertions.assertEquals(member.getPassword().getValue(), password.getNewValue());
     }
 
     @Test
     @DisplayName("비밀번호 불일치로 변경 실패")
     void changePassword_passwordNotMatch() {
-        String newPassword = "new";
-        Assertions.assertThrows(PasswordNotMatchException.class, () -> member.changePassword("test", newPassword));
+        Assertions.assertThrows(PasswordNotMatchException.class, () -> member.changePassword(password));
     }
 
 }

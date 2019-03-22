@@ -47,7 +47,8 @@ class MemberRepositoryTest {
         LocalDateTime createAt = member.getCreateAt();
         LocalDateTime updateAt = member.getUpdateAt();
 
-        member.changePassword("old", "new");
+        Password password = PasswordBuilder.build();
+        member.changePassword(password);
         member = memberRepository.saveAndFlush(member);
 
         assertThat(createAt).isEqualTo(member.getCreateAt());

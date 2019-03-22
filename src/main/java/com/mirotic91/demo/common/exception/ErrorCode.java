@@ -12,7 +12,9 @@ public enum ErrorCode {
     METHOD_NOT_ALLOWED(405, "C-005", "Method Not Allowed"),
     INTERNAL_SERVER_ERROR(500, "C-006", "Server Error"),
 
-    PASSWORD_NOT_MATCHED(400, "M-001", "Password Not Matched"),
+    MEMBER_NOT_FOUND(400, "M-001", "Member Not Found"),
+    PASSWORD_NOT_MATCHED(400, "M-002", "Password Not Matched"),
+
     ORDER_NOT_FOUND(400, "O-001", "Order Not Found");
 
     private final int status;

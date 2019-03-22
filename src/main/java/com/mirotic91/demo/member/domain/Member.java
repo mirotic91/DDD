@@ -56,11 +56,11 @@ public class Member {
         this.password = password;
     }
 
-    public void changePassword(String oldPassword, String newPassword) {
-        if (!password.matches(oldPassword)) {
+    public void changePassword(Password password) {
+        if (!password.matches(password.getValue())) {
             throw new PasswordNotMatchException();
         }
-        this.password = Password.from(newPassword);
+        this.password = Password.from(password.getNewValue());
     }
 
 }
