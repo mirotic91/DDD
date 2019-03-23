@@ -2,18 +2,18 @@ package com.mirotic91.demo.member.domain;
 
 import com.mirotic91.demo.member.domain.exception.PasswordNotMatchException;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class MemberTest {
 
-    private static Member member;
+    private Member member;
 
-    private static Password password;
+    private Password password;
 
-    @BeforeAll
-    static void setUp() {
+    @BeforeEach
+    void setUp() {
         member = MemberBuilder.build();
         password = PasswordBuilder.build();
     }
@@ -28,6 +28,7 @@ class MemberTest {
     @Test
     @DisplayName("비밀번호 불일치로 변경 실패")
     void changePassword_passwordNotMatch() {
+        password = PasswordBuilder.build("new", "new");
         Assertions.assertThrows(PasswordNotMatchException.class, () -> member.changePassword(password));
     }
 

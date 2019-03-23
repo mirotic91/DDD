@@ -1,4 +1,4 @@
-package com.mirotic91.demo.member.domain.dto;
+package com.mirotic91.demo.member.ui.dto;
 
 import com.mirotic91.demo.member.domain.Password;
 import lombok.AccessLevel;

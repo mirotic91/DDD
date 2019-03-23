@@ -57,7 +57,7 @@ public class Member {
     }
 
     public void changePassword(Password password) {
-        if (!password.matches(password.getValue())) {
+        if (!this.password.matches(password.getValue())) {
             throw new PasswordNotMatchException();
         }
         this.password = Password.from(password.getNewValue());
