@@ -1,0 +1,29 @@
+### 회원 가입
+POST http://localhost:8080/api/members
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": {
+    "value": "jonguk1221@gmail.com"
+  },
+  "name": {
+    "first": "jonguk",
+    "last": "park"
+  },
+  "password": {
+    "value": "complicated"
+  }
+}
+
+### 비밀번호 변경
+PUT http://localhost:8080/api/members/1/password
+Accept: application/json
+Content-Type: application/json
+
+{
+  "password": {
+    "value": "old",
+    "newValue": "new"
+  }
+}

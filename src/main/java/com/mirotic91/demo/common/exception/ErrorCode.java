@@ -14,6 +14,7 @@ public enum ErrorCode {
 
     MEMBER_NOT_FOUND(400, "M-001", "Member Not Found"),
     PASSWORD_NOT_MATCHED(400, "M-002", "Password Not Matched"),
+    EMAIL_DUPLICATED(400, "M-003", "Email is Duplicated"),
 
     ORDER_NOT_FOUND(400, "O-001", "Order Not Found");
 
