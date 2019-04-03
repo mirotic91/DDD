@@ -21,4 +21,8 @@ public class MemberHelperService {
         return optionalMember.orElseThrow(MemberNotFoundException::new);
     }
 
+    public void deleteById(Long id) {
+        Member member = findById(id);
+        memberRepository.delete(member);
+    }
 }
