@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
@@ -40,6 +42,12 @@ public class MemberApi {
     public ResponseEntity<MemberResponse> get(@PathVariable Long id) {
         Member member = memberHelperService.findById(id);
         return new ResponseEntity<>(new MemberResponse(member), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<MemberResponse>> getAll() {
+        List<MemberResponse> members = memberHelperService.findAll();
+        return new ResponseEntity<>(members, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

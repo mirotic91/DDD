@@ -18,6 +18,9 @@ Content-Type: application/json
 ### 조회
 GET http://localhost:8080/api/members/1
 
+### 목록 조회
+GET http://localhost:8080/api/members
+
 ### 비밀번호 변경
 PUT http://localhost:8080/api/members/1/password
 Content-Type: application/json
