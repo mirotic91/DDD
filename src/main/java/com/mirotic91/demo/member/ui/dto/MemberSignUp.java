@@ -5,6 +5,7 @@ import com.mirotic91.demo.common.model.Name;
 import com.mirotic91.demo.member.domain.Member;
 import com.mirotic91.demo.member.domain.Password;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,5 +25,12 @@ public class MemberSignUp {
             .name(this.name)
             .password(this.password)
             .build();
+    }
+
+    @Builder
+    public MemberSignUp(Email email, Name name, Password password) {
+        this.email = email;
+        this.name = name;
+        this.password = password;
     }
 }
