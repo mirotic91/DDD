@@ -7,15 +7,18 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotBlank;
 
 @Embeddable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Name {
 
+    @NotBlank
     @Column(name = "first_name")
     private String first;
 
+    @NotBlank
     @Column(name = "last_name")
     private String last;
 

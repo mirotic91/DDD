@@ -13,7 +13,7 @@ public class MemberBuilder {
         return createMember(email, name, password);
     }
 
-    private static Member createMember(Email email, Name name, Password password) {
+    public static Member createMember(Email email, Name name, Password password) {
         return Member.builder()
                 .email(email)
                 .name(name)

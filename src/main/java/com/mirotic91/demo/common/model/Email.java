@@ -12,6 +12,7 @@ import javax.persistence.Embeddable;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Email {
 
+    @javax.validation.constraints.Email
     @Column(name = "email", unique = true, nullable = false)
     private String value;
 

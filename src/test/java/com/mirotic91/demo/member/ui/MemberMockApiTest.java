@@ -1,44 +1,60 @@
 package com.mirotic91.demo.member.ui;
 
-import com.mirotic91.demo.common.IntegrationTest;
+import com.mirotic91.demo.common.MockApiTest;
 import com.mirotic91.demo.common.model.Email;
 import com.mirotic91.demo.common.model.Name;
 import com.mirotic91.demo.member.application.MemberHelperService;
+import com.mirotic91.demo.member.application.MemberPasswordService;
 import com.mirotic91.demo.member.application.MemberSignUpService;
 import com.mirotic91.demo.member.domain.Member;
 import com.mirotic91.demo.member.domain.MemberBuilder;
 import com.mirotic91.demo.member.domain.Password;
 import com.mirotic91.demo.member.ui.dto.MemberSignUp;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class MemberApiTest extends IntegrationTest {
+@Slf4j
+class MemberMockApiTest extends MockApiTest {
 
     @Autowired
-    MemberSignUpService memberSignUpService;
+    private WebApplicationContext context;
 
-    @Autowired
-    MemberHelperService memberHelperService;
+    @MockBean
+    private MemberSignUpService memberSignUpService;
+
+    @MockBean
+    private MemberHelperService memberHelperService;
+
+    @MockBean
+    private MemberPasswordService memberPasswordService;
+
+    @BeforeEach
+    void setUp() {
+        mvc = buildMockMvc(context);
+    }
 
     @Test
     @DisplayName("회원 가입")
     void signUp() throws Exception {
         Member member = MemberBuilder.build();
         MemberSignUp dto = MemberSignUpBuilder.create(member);
+        given(memberSignUpService.doSignUp(any())).willReturn(member);
 
         ResultActions resultActions = requestSignUp(dto);
 
         resultActions.andExpect(status().isCreated());
-        resultActions.andExpect(jsonPath("email.value").value(member.getEmail().getValue()));
-        resultActions.andExpect(jsonPath("name.fullName").value(member.getName().getFullName()));
     }
 
     @Test
@@ -59,18 +75,6 @@ class MemberApiTest extends IntegrationTest {
         return mvc.perform(post("/api/members")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectMapper.writeValueAsString(dto)));
-    }
-
-    @Test
-    @DisplayName("회원 목록 조회")
-    void findAll() throws Exception {
-        ResultActions resultActions = requestFindAll();
-
-        resultActions.andExpect(status().isOk());
-    }
-
-    private ResultActions requestFindAll() throws Exception {
-        return mvc.perform(get("/api/members"));
     }
 
 }

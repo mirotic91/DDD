@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -33,7 +34,7 @@ public class MemberApi {
     private final MemberPasswordService memberPasswordService;
 
     @PostMapping
-    public ResponseEntity<MemberResponse> create(@RequestBody MemberSignUp dto) {
+    public ResponseEntity<MemberResponse> create(@RequestBody @Valid MemberSignUp dto) {
         Member member = memberSignUpService.doSignUp(dto);
         return new ResponseEntity<>(new MemberResponse(member), HttpStatus.CREATED);
     }
