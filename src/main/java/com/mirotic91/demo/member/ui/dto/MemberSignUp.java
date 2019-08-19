@@ -17,18 +17,18 @@ public class MemberSignUp {
 
     private Name name;
 
-    private Password password;
+    private String password;
 
     public Member toEntity() {
         return Member.builder()
             .email(this.email)
             .name(this.name)
-            .password(this.password)
+            .password(Password.from(this.password))
             .build();
     }
 
     @Builder
-    public MemberSignUp(Email email, Name name, Password password) {
+    public MemberSignUp(Email email, Name name, String password) {
         this.email = email;
         this.name = name;
         this.password = password;

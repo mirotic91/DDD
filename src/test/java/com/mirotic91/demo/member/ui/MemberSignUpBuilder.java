@@ -9,7 +9,7 @@ public class MemberSignUpBuilder {
         return MemberSignUp.builder()
                 .email(member.getEmail())
                 .name(member.getName())
-                .password(member.getPassword())
+                .password(member.getPassword().getValue())
                 .build();
     }
 
