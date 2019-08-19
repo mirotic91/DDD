@@ -62,6 +62,27 @@ class MemberApiTest extends IntegrationTest {
     }
 
     @Test
+    @DisplayName("회원 조회")
+    void find() throws Exception {
+        Email email = Email.from("mirotic@google.com");
+        Name name = Name.builder().first("jonguk").last("park").build();
+        Password password = Password.from("secret");
+        Member member = MemberBuilder.createMember(email, name, password);
+        MemberSignUp dto = MemberSignUpBuilder.create(member);
+
+        member = memberSignUpService.doSignUp(dto);
+        ResultActions resultActions = requestFind(member.getId());
+
+        resultActions.andExpect(status().isOk());
+        resultActions.andExpect(jsonPath("email.value").value(member.getEmail().getValue()));
+        resultActions.andExpect(jsonPath("name.fullName").value(member.getName().getFullName()));
+    }
+
+    private ResultActions requestFind(Long id) throws Exception {
+        return mvc.perform(get("/api/members/{id}", id));
+    }
+
+    @Test
     @DisplayName("회원 목록 조회")
     void findAll() throws Exception {
         ResultActions resultActions = requestFindAll();

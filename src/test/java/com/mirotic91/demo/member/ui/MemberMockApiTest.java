@@ -21,7 +21,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -75,6 +77,21 @@ class MemberMockApiTest extends MockApiTest {
         return mvc.perform(post("/api/members")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(objectMapper.writeValueAsString(dto)));
+    }
+
+    @Test
+    @DisplayName("회원 조회")
+    void find() throws Exception {
+        Member member = MemberBuilder.build();
+        given(memberHelperService.findById(anyLong())).willReturn(member);
+
+        ResultActions resultActions = requestFind(0L);
+
+        resultActions.andExpect(status().isOk());
+    }
+
+    private ResultActions requestFind(Long id) throws Exception {
+        return mvc.perform(get("/api/members/{id}", id));
     }
 
 }
