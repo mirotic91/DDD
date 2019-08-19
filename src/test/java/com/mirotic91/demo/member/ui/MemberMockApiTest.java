@@ -9,6 +9,7 @@ import com.mirotic91.demo.member.application.MemberSignUpService;
 import com.mirotic91.demo.member.domain.Member;
 import com.mirotic91.demo.member.domain.MemberBuilder;
 import com.mirotic91.demo.member.domain.Password;
+import com.mirotic91.demo.member.ui.dto.MemberResponse;
 import com.mirotic91.demo.member.ui.dto.MemberSignUp;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +20,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.Arrays;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -92,6 +95,22 @@ class MemberMockApiTest extends MockApiTest {
 
     private ResultActions requestFind(Long id) throws Exception {
         return mvc.perform(get("/api/members/{id}", id));
+    }
+
+    @Test
+    @DisplayName("회원 목록 조회")
+    void findAll() throws Exception {
+        Member member = MemberBuilder.build();
+        MemberResponse memberResponse = new MemberResponse(member);
+        given(memberHelperService.findAll()).willReturn(Arrays.asList(memberResponse));
+
+        ResultActions resultActions = requestFindAll();
+
+        resultActions.andExpect(status().isOk());
+    }
+
+    private ResultActions requestFindAll() throws Exception {
+        return mvc.perform(get("/api/members"));
     }
 
 }
