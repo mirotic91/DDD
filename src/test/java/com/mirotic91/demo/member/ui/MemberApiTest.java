@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -92,6 +93,22 @@ class MemberApiTest extends IntegrationTest {
 
     private ResultActions requestFindAll() throws Exception {
         return mvc.perform(get("/api/members"));
+    }
+
+    @Test
+    @DisplayName("회원 삭제")
+    void remove() throws Exception {
+        Member member = MemberBuilder.build();
+        MemberSignUp dto = MemberSignUpBuilder.create(member);
+
+        member = memberSignUpService.doSignUp(dto);
+        ResultActions resultActions = requestDelete(member.getId());
+
+        resultActions.andExpect(status().isNoContent());
+    }
+
+    private ResultActions requestDelete(Long id) throws Exception {
+        return mvc.perform(delete("/api/members/{id}", id));
     }
 
 }

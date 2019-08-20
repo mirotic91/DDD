@@ -26,6 +26,7 @@ import java.util.Arrays;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -45,15 +46,17 @@ class MemberMockApiTest extends MockApiTest {
     @MockBean
     private MemberPasswordService memberPasswordService;
 
+    private Member member;
+
     @BeforeEach
     void setUp() {
         mvc = buildMockMvc(context);
+        member = MemberBuilder.build();
     }
 
     @Test
     @DisplayName("회원 가입")
     void signUp() throws Exception {
-        Member member = MemberBuilder.build();
         MemberSignUp dto = MemberSignUpBuilder.create(member);
         given(memberSignUpService.doSignUp(any())).willReturn(member);
 
@@ -85,7 +88,6 @@ class MemberMockApiTest extends MockApiTest {
     @Test
     @DisplayName("회원 조회")
     void find() throws Exception {
-        Member member = MemberBuilder.build();
         given(memberHelperService.findById(anyLong())).willReturn(member);
 
         ResultActions resultActions = requestFind(0L);
@@ -100,7 +102,6 @@ class MemberMockApiTest extends MockApiTest {
     @Test
     @DisplayName("회원 목록 조회")
     void findAll() throws Exception {
-        Member member = MemberBuilder.build();
         MemberResponse memberResponse = new MemberResponse(member);
         given(memberHelperService.findAll()).willReturn(Arrays.asList(memberResponse));
 
@@ -111,6 +112,20 @@ class MemberMockApiTest extends MockApiTest {
 
     private ResultActions requestFindAll() throws Exception {
         return mvc.perform(get("/api/members"));
+    }
+
+    @Test
+    @DisplayName("회원 삭제")
+    void remove() throws Exception {
+        given(memberHelperService.findById(anyLong())).willReturn(member);
+
+        ResultActions resultActions = requestDelete(0L);
+
+        resultActions.andExpect(status().isNoContent());
+    }
+
+    private ResultActions requestDelete(Long id) throws Exception {
+        return mvc.perform(delete("/api/members/{id}", id));
     }
 
 }
