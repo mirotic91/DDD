@@ -9,6 +9,8 @@ import com.mirotic91.demo.member.application.MemberSignUpService;
 import com.mirotic91.demo.member.domain.Member;
 import com.mirotic91.demo.member.domain.MemberBuilder;
 import com.mirotic91.demo.member.domain.Password;
+import com.mirotic91.demo.member.domain.PasswordBuilder;
+import com.mirotic91.demo.member.ui.dto.MemberPasswordUpdate;
 import com.mirotic91.demo.member.ui.dto.MemberResponse;
 import com.mirotic91.demo.member.ui.dto.MemberSignUp;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Slf4j
@@ -126,6 +129,23 @@ class MemberMockApiTest extends MockApiTest {
 
     private ResultActions requestDelete(Long id) throws Exception {
         return mvc.perform(delete("/api/members/{id}", id));
+    }
+
+    @Test
+    @DisplayName("회원 비밀번호 변경")
+    void changePassword() throws Exception {
+        MemberPasswordUpdate dto = MemberPasswordUpdateBuilder.create(PasswordBuilder.build());
+        given(memberPasswordService.change(anyLong(), any())).willReturn(member);
+
+        ResultActions resultActions = requestChangePassword(0L, dto);
+
+        resultActions.andExpect(status().isOk());
+    }
+
+    private ResultActions requestChangePassword(Long id, MemberPasswordUpdate dto) throws Exception {
+        return mvc.perform(put("/api/members/{id}/password", id)
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(objectMapper.writeValueAsString(dto)));
     }
 
 }
